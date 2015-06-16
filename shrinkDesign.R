@@ -14,9 +14,10 @@ maximum = which.max(minimum.distances.mean)
 new.designs = lapply(new.designs, function(x){x[-maximum, ]} )
 }
 
-### split up design for computing new points
-cut(1:(n.new-1), breaks = length(cliques))
+### leave out one clique for each of the n.new points
+leave.out = cut(1:n.new, breaks = length(cliques), labels = FALSE)
 
+lapply(1:length(cliques), function(x, lo, des){des[[x]][-which(lo == x)]}, lo = leave.out, des = new.designs)
 
 
 lapply(new.designs, function(x){rbind(x,0)})
