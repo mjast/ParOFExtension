@@ -33,7 +33,7 @@ KM <- km(~1, design = data.frame(x), response = y)
 g <- estimateGraph(f.mat = kmPredictWrapper, d = d, n.tot = 30000, q.arg = 
                      list(min = domain[1], max = domain[2]), km.object = KM) 
 
-### threshold inactive edges and plot graph again
+### threshold inactive edges and plot graph
 
 g.cut <- threshold(g, delta = 0.01, scale = TRUE)
 plot(g.cut)
@@ -42,4 +42,9 @@ plot(g.cut)
 
 Cliques <- g.cut$cliques
 
-### to be continued
+### copmpute shrinked design and responses for each clique
+
+source("shrinkDesign.R")
+result = shrinkDesign(fun = fun, cliques = Cliques, initial.design = x, initial.values = y, n.new = 20)
+
+all.equal(fun(result$designs[[2]]), result$responses[[2]])
