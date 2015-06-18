@@ -1,3 +1,5 @@
+source("shrinkDesign.R")
+
 ### example based on "Example6D"-Demo in fanovaGraph
 require(fanovaGraph)
 
@@ -9,8 +11,8 @@ domain <- c(-1, 1)
 fun <- function(x) {
   beta <- c(-0.8, -1.1, 1.1, 1)
   gamma <- c(-0.5, 0.9, 1, -1.1)
-  result <- cos(cbind(1, x[, c(1, 5, 3)]) %*% beta) + sin(cbind(1, 
-                                                                x[, c(4, 2, 6)]) %*% gamma)
+  result <- cos(cbind(1, x[, c(1, 5, 3)]) %*% beta) 
+            + sin(cbind(1, x[, c(4, 2, 6)]) %*% gamma)
   return(result)
 }
 
@@ -44,7 +46,9 @@ Cliques <- g.cut$cliques
 
 ### copmpute shrinked design and responses for each clique
 
-source("shrinkDesign.R")
-result = shrinkDesign(fun = fun, cliques = Cliques, initial.design = x, initial.values = y, n.new = 20)
 
+result = shrinkDesign(fun = fun, cliques = Cliques, initial.design = x,
+                      initial.values = y, n.new = 20)
+
+### comparison of computed response and real evaluation
 all.equal(fun(result$designs[[2]]), result$responses[[2]])
