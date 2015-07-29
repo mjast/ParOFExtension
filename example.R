@@ -1,5 +1,5 @@
 source("shrinkDesign.R")
-
+source("addUncertainty.R")
 ### example based on "Example6D"-Demo in fanovaGraph
 require(fanovaGraph)
 
@@ -52,3 +52,8 @@ result = shrinkDesign(fun = fun, cliques = Cliques, initial.design = x,
 
 ### comparison of computed response and real evaluation
 all.equal(fun(result$designs[[2]]), result$responses[[2]])
+
+
+### addUncertainty (provisional version)
+result2 = addUncertainty(fun = fun, cliques = Cliques, initial.design = x,
+                         initial.values = y)
