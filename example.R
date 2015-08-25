@@ -54,6 +54,6 @@ result = shrinkDesign(fun = fun, cliques = Cliques, initial.design = x,
 all.equal(fun(result$designs[[2]]), result$responses[[2]])
 
 
-### addUncertainty (provisional version)
+### addUncertainty (provisional version) very time-consuming beacuse of genetic optimization algorithm
 result2 = addUncertainty(fun = fun, cliques = Cliques, initial.design = x,
                          initial.values = y)
