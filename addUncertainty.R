@@ -51,11 +51,10 @@ addUncertainty = function(fun, cliques, initial.design, initial.values){
   
   nugget = model$nugget.effect
   
-  # KM <- km(~1, design = data.frame(designs), response = as.vector(responses), nugget.estim = TRUE)
-  
-  for (i in 1:(n-1)){
-    responses[i, na.vec[i]] = responses[i, na.vec[i]] + nugget
-  }
+
+#   for (i in 1:(n-1)){
+#     responses[i, na.vec[i]] = responses[i, na.vec[i]] + nugget
+#   }
   
   ### list of responses
   responses = split(responses, col(responses))
@@ -64,7 +63,7 @@ addUncertainty = function(fun, cliques, initial.design, initial.values){
   ### add run c
   new.designs = lapply(new.designs, function(x){rbind(x, initial.design[c,])})
   responses = lapply(responses, function(x){rbind(x, initial.values[c])})
-  return(list(designs = new.designs, responses = responses, nugget = nugget))
+  return(list(designs = new.designs, responses = responses, nugget = nugget, diagonal.elements = diagonal.elements))
 } 
 
 
