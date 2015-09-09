@@ -17,13 +17,15 @@
 shrinkDesign = function(fun, cliques, initial.design, initial.values, n.new){
 
   n = nrow(initial.design)
+  p = ncol(initial.design)
   n.cl = length(cliques)
   c = which.min(initial.values)
 
   ### design for each clique (run c left out, already evaluated)
   new.designs = lapply(
     cliques, function(x, des){
-      des[, x] = matrix(rep(initial.design[c, x],each = n-1), 
+      cliquediff = setdiff(1:p, as.numeric(x))
+      des[, cliquediff] = matrix(rep(initial.design[c, cliquediff], each = n-1), 
                         nrow = n-1, byrow = FALSE) 
       return(des)
     },
@@ -43,7 +45,7 @@ shrinkDesign = function(fun, cliques, initial.design, initial.values, n.new){
   }
 
   ### responses for every clique but one by evaluating fun
-  responses = lapply(new.designs[1:(length(new.designs)-1)], fun)  
+  responses = lapply(new.designs[1:(length(new.designs)-1)], function(x){as.matrix(fun(x))})  
   ### response for left out clique without evaluating fun
   sums = rowSums(data.frame(responses))
   responses[[n.cl]] = matrix(initial.values.mod + (n.cl-1)* initial.values[c] - sums)

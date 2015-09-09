@@ -13,8 +13,9 @@ addUncertainty = function(fun, cliques, initial.design, initial.values){
   ### design for each clique (run c left out, already evaluated)
   new.designs = lapply(
     cliques, function(x, des){
-      des[, x] = matrix(rep(initial.design[c, x],each = n-1),
-                        nrow = n-1, byrow = FALSE)
+      cliquediff = setdiff(1:p, as.numeric(x))
+      des[, cliquediff] = matrix(rep(initial.design[c, cliquediff], each = n-1), 
+                                 nrow = n-1, byrow = FALSE) 
       return(des)
     },
     des = initial.design[-c,]
@@ -52,17 +53,16 @@ addUncertainty = function(fun, cliques, initial.design, initial.values){
   nugget = model$nugget.effect
   
 
-#   for (i in 1:(n-1)){
-#     responses[i, na.vec[i]] = responses[i, na.vec[i]] + nugget
-#   }
-  
-  ### list of responses
+  ### list of diagonal elements and lit of responses
+  diagonal.elements = split(diagonal.elements, col(responses))
   responses = split(responses, col(responses))
+  
   ### if matrix-style output is desired
   responses = lapply(responses, as.matrix)
   ### add run c
   new.designs = lapply(new.designs, function(x){rbind(x, initial.design[c,])})
   responses = lapply(responses, function(x){rbind(x, initial.values[c])})
+  diagonal.elements = lapply(diagonal.elements, function(x){c(x, 0)})
   return(list(designs = new.designs, responses = responses, nugget = nugget, diagonal.elements = diagonal.elements))
 } 
 
